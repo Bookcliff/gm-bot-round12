@@ -13,6 +13,7 @@
     "mongoose": "^6.4.4",
     "vercel": "^27.1.0"
   },
+  "scripts": {"start": "vercel dev"},
   "devDependencies": {
     "eslint": "^8.19.0"
   }
