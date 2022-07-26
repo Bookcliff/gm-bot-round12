@@ -1,22 +1,26 @@
-const { Client, Intents } = require('discord.js');
+const fetch = require("node-fetch");
 
-require('dotenv').config();
+module.exports = async (request, response) => {
+  const message = {
+    content: "GM",
+    username: "Bot",
+  };
 
-export default function handler(request, response) {
+  const getWebhook = await fetch(
+    `https://discord.com/api/channels/${process.env.CHANNEL_ID}/webhooks`
+  );
 
-    const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+  const sendMessage = await fetch(
+    `https://discord.com/api/webhooks/${process.env.CHANNEL_ID}/nVAuRueDlqSjLgMazEr5Uptg2IdNJqdzL4QzrPyQ3g-N9yZTXIcBh0BSK75XfeVEQ8ji`,
+    {
+      method: "POST",
+      body: JSON.stringify({ message }),
+    }
+  );
 
-client.on('ready', () => {
-    console.log('The bot is ready')
-});
+  response.status(200).json({
+    message,
+  });
+};
 
-client.login(process.env.TOKEN);
-
-    response.status(200).json({
-      body: request.body,
-      query: request.query,
-      cookies: request.cookies,
-    });
-  }
-
-
+//Get webhook from discord (POST request); pull channel ID & token for POST request to execute w/message object; once the message is sent, DELETE req to delete the webhook.
